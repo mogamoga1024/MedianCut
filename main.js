@@ -18,6 +18,10 @@ function main() {
 function toRgbArray(imageData) {
     const rgbArray = [];
     for (let i = 0; i < imageData.length; i += 4) {
+        // 透明は排除する。
+        if (imageData[i + 3] === 0) {
+            continue;
+        }
         const red   = imageData[i];
         const green = imageData[i + 1];
         const blue  = imageData[i + 2];
