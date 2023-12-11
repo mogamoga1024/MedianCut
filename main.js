@@ -26,13 +26,27 @@ function toRgbArray(imageData) {
         const green = imageData[i + 1];
         const blue  = imageData[i + 2];
         rgbArray.push({
-            r: red, g: green, b: blue
+            red, green, blue
         });
     }
     return rgbArray;
 }
 
-function medianCut(rgbArray) {
+function medianCut(rgbArray, maxDivisionCount) {
+    let targetColor = "red"; // red, green, blue
+    const red =   {min: 255, max: 0};
+    const green = {min: 255, max: 0};
+    const blue =  {min: 255, max: 0};
+
+    for (const color of rgbArray) {
+        red.min = Math.min(red.min, color.red);
+        red.max = Math.max(red.max, color.red);
+        green.min = Math.min(green.min, color.green);
+        green.max = Math.max(green.max, color.green);
+        blue.min = Math.min(blue.min, color.blue);
+        blue.max = Math.max(blue.max, color.blue);
+    }
+
 
 }
 
