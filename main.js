@@ -46,8 +46,7 @@ function toColorArray(imageData) {
 }
 
 function medianCut(colorArray, maxColorGroupCount = 4) {
-    let colorName = "red"; // red, green, blue
-    let colorGroupArray = [[...colorArray]];
+    const colorGroupArray = [[...colorArray]];
 
     for (let i = 0; i < maxColorGroupCount - 1; i++) {
         // 最も要素が多い色空間を選択
@@ -62,12 +61,35 @@ function medianCut(colorArray, maxColorGroupCount = 4) {
         const colorGroup = colorGroupArray[maxLengthIndex];
         colorGroupArray.splice(maxLengthIndex, 1);
         
-        let min = 255, max = 0;
-        for (const color of colorGroup) {
-            min = Math.min(min, color[colorName]);
-            max = Math.max(max, color[colorName]);
+        const statistics = {
+            red:   {min: 255, max: 0},
+            green: {min: 255, max: 0},
+            blue:  {min: 255, max: 0}
         }
-        const center = (min + max) / 2;
+        for (const color of colorGroup) {
+            for (const key in statistics) {
+                const obj = statistics[key];
+                obj.min = Math.min(obj.min, color[key]);
+                obj.max = Math.max(obj.max, color[key]);
+            }
+        }
+
+        let colorName = undefined;
+        const redDiff   = statistics.red.max   - statistics.red.min;
+        const greenDiff = statistics.green.max - statistics.green.min;
+        const blueDiff  = statistics.blue.max  - statistics.blue.min;
+
+        if (redDiff >= greenDiff && redDiff >= blueDiff) {
+            colorName = "red";
+        }
+        else if (greenDiff >= redDiff && greenDiff >= blueDiff) {
+            colorName = "green";
+        }
+        else {
+            colorName = "blue";
+        }
+        
+        const center = (statistics[colorName].min + statistics[colorName].max) / 2;
 
         const lowerGroup = [], upperGropu = [];
         for (const color of colorGroup) {
@@ -80,13 +102,6 @@ function medianCut(colorArray, maxColorGroupCount = 4) {
         }
         colorGroupArray.push(lowerGroup);
         colorGroupArray.push(upperGropu);
-
-        switch (colorName) {
-            case "red":   colorName = "green"; break;
-            case "green": colorName = "blue";  break;
-            case "blue":  colorName = "red";   break;
-            default: throw new Error(`不正な値：${colorName}`);
-        }
     }
 
     return colorGroupArray.map(colorGroup => {
