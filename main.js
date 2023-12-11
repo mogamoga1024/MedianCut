@@ -13,9 +13,15 @@ function main() {
     context.drawImage(image, 0, 0);
     const imageData = context.getImageData(0, 0, canvas.width, canvas.height).data;
     const colorArray = toColorArray(imageData);
-    const divisiionColorArray = medianCut(colorArray);
+    const newColorArray = medianCut(colorArray);
     
-    // todo
+    const resultHE = document.querySelector("#result");
+    for (const color of newColorArray) {
+        const colorHE = document.createElement("div");
+        colorHE.classList.add("color");
+        colorHE.style.backgroundColor = `rgb(${color.red}, ${color.green}, ${color.blue})`;
+        resultHE.appendChild(colorHE);
+    }
 }
 
 function toColorArray(imageData) {
