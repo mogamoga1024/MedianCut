@@ -5,10 +5,10 @@ const context = canvas.getContext("2d");
 const image = new Image();
 
 image.onload = main;
-// image.src = "images/clover_days.jpg";
-image.src = "images/2.jpg";
-image.src = "images/jeff.jpg";
-image.src = "images/sanrio.jpg";
+image.src = "images/clover_days.jpg";
+// image.src = "images/2.jpg";
+// image.src = "images/jeff.jpg";
+// image.src = "images/sanrio.jpg";
 // image.src = "images/しもんきん.jpg";
 
 function main() {
@@ -17,7 +17,7 @@ function main() {
     context.drawImage(image, 0, 0);
     const imageData = context.getImageData(0, 0, canvas.width, canvas.height).data;
     const colorArray = toColorArray(imageData);
-    const newColorArray = medianCut(colorArray, 8);
+    const newColorArray = medianCut(colorArray, 20);
     
     const resultHE = document.querySelector("#result");
     for (const color of newColorArray) {
@@ -82,13 +82,13 @@ function medianCut(colorArray, maxColorGroupCount = 4) {
         if (redDiff >= greenDiff && redDiff >= blueDiff) {
             colorName = "red";
         }
-        else if (greenDiff >= redDiff && greenDiff >= blueDiff) {
-            colorName = "green";
-        }
-        else {
+        else if (blueDiff >= redDiff && blueDiff >= greenDiff) {
             colorName = "blue";
         }
-        
+        else {
+            colorName = "green";
+        }
+
         const center = (statistics[colorName].min + statistics[colorName].max) / 2;
 
         const lowerGroup = [], upperGropu = [];
