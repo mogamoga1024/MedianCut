@@ -35,11 +35,11 @@ function toColorArray(imageData) {
     return colorArray;
 }
 
-function medianCut(colorArray, maxDivisionCount = 8) {
+function medianCut(colorArray, maxColorGroupCount = 4) {
     let colorName = "red"; // red, green, blue
     let colorGroupArray = [[...colorArray]];
 
-    for (let i = 0; i < maxDivisionCount; i++) {
+    for (let i = 0; i < maxColorGroupCount - 1; i++) {
         // 最も要素が多い色空間を選択
         let maxLength = 0, maxLengthIndex = 0;
         for (let i = 0; i < colorGroupArray.length; i++) {
@@ -84,6 +84,7 @@ function medianCut(colorArray, maxDivisionCount = 8) {
             total.red   += color.red;
             total.green += color.green;
             total.blue  += color.blue;
+            return total;
         }, {red: 0, green: 0, blue: 0});
         return {
             red:   Math.round(totalColor.red   / colorGroup.length),
