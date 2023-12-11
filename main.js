@@ -5,11 +5,13 @@ const context = canvas.getContext("2d");
 const image = new Image();
 
 image.onload = main;
-image.src = "images/clover_days.jpg";
+image.setAttribute("crossorigin", "anonymous");
+// image.src = "images/clover_days.jpg";
 // image.src = "images/2.jpg";
 // image.src = "images/jeff.jpg";
 // image.src = "images/sanrio.jpg";
 // image.src = "images/しもんきん.jpg";
+image.src = "https://picsum.photos/800/400";
 
 function main() {
     canvas.width = image.width;
@@ -17,7 +19,7 @@ function main() {
     context.drawImage(image, 0, 0);
     const imageData = context.getImageData(0, 0, canvas.width, canvas.height).data;
     const colorArray = toColorArray(imageData);
-    const newColorArray = medianCut(colorArray, 20);
+    const newColorArray = medianCut(colorArray, 5);
     
     const resultHE = document.querySelector("#result");
     for (const color of newColorArray) {
