@@ -6,12 +6,12 @@ const image = new Image();
 
 image.onload = main;
 image.setAttribute("crossorigin", "anonymous");
-// image.src = "images/clover_days.jpg";
-// image.src = "images/2.jpg";
+image.src = "images/clover_days.jpg";
+image.src = "images/2.jpg";
 // image.src = "images/jeff.jpg";
 // image.src = "images/sanrio.jpg";
 // image.src = "images/しもんきん.jpg";
-image.src = "https://picsum.photos/800/400";
+// image.src = "https://picsum.photos/800/400";
 
 function main() {
     canvas.width = image.width;
@@ -84,11 +84,11 @@ function medianCut(colorArray, maxColorGroupCount = 4) {
         if (redDiff >= greenDiff && redDiff >= blueDiff) {
             colorName = "red";
         }
-        else if (blueDiff >= redDiff && blueDiff >= greenDiff) {
-            colorName = "blue";
+        else if (greenDiff >= redDiff && greenDiff >= blueDiff) {
+            colorName = "green";
         }
         else {
-            colorName = "green";
+            colorName = "blue";
         }
 
         const center = (statistics[colorName].min + statistics[colorName].max) / 2;
