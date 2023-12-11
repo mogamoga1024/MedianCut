@@ -1,0 +1,21 @@
+
+canvas {
+  display: block;
+  margin-bottom: 16px;
+  border: 1px solid black;
+}
+
+#result {
+  display: flex;
+}
+
+.color {
+  width: 150px;
+  height: 150px;
+  background-color: red;
+  border: 1px solid black;
+}
+
+.color:not(:first-of-type) {
+  margin-left: 8px;
+}
