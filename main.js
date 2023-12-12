@@ -51,7 +51,7 @@ function toColorArray(imageData) {
     return colorArray;
 }
 
-function medianCut(colorArray, maxColorGroupCount = 4) {
+function medianCut(colorArray, maxColorGroupCount = 8) {
     // 薄い色は無視する
     const colorGroupArray = [colorArray.filter(color => {
         return color.red < 220 || color.green < 220 || color.blue < 220 
@@ -87,6 +87,7 @@ function medianCut(colorArray, maxColorGroupCount = 4) {
         const greenDiff = statistics.green.max - statistics.green.min;
         const blueDiff  = statistics.blue.max  - statistics.blue.min;
 
+        // RGBで強弱が大きい要素を求める
         if (redDiff >= greenDiff && redDiff >= blueDiff) {
             colorName = "red";
         }
@@ -99,6 +100,7 @@ function medianCut(colorArray, maxColorGroupCount = 4) {
 
         const center = (statistics[colorName].min + statistics[colorName].max) / 2;
 
+        // 中央値で分割する
         const lowerGroup = [], upperGropu = [];
         for (const color of colorGroup) {
             if (color[colorName] < center) {
@@ -113,6 +115,7 @@ function medianCut(colorArray, maxColorGroupCount = 4) {
         if (upperGropu.length > 0) colorGroupArray.push(upperGropu);
     }
 
+    // 分割された色空間の平均値を求める
     return colorGroupArray.map(colorGroup => {
         const totalColor = colorGroup.reduce((total, color) => {
             total.red   += color.red;
