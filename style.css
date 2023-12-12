@@ -1,4 +1,13 @@
 
+:root {
+  margin: 0;
+  padding: 16px;
+}
+
+#file {
+  margin-bottom: 16px;
+}
+
 canvas {
   display: block;
   margin-bottom: 16px;
@@ -7,7 +16,6 @@ canvas {
 
 #result {
   display: flex;
-  margin-bottom: 16px;
   flex-wrap: wrap;
   gap: 2px;
 }
