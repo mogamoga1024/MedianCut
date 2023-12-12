@@ -33,3 +33,8 @@ function main() {
     }
 }
 
+const fileHE = document.querySelector("#file");
+
+fileHE.onchange = (e) => {
+    console.log(e);
+};

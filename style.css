@@ -1,11 +1,12 @@
 
-:root {
+body {
   margin: 0;
   padding: 16px;
 }
 
 #file {
   margin-bottom: 16px;
+  font-size: 16px;
 }
 
 canvas {
