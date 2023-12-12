@@ -11,7 +11,6 @@ image.src = "images/clover_days.jpg";
 // image.src = "images/jeff.jpg";
 // image.src = "images/sanrio.jpg";
 // image.src = "images/しもんきん.jpg";
-// image.src = "https://picsum.photos/800/400";
 // image.src = "images/野獣先輩.png";
 // image.src = "images/watya.jpg";
 
@@ -37,9 +36,14 @@ function main() {
     }
 }
 
-const fileHE = document.querySelector("#file");
+const randomImageButton = document.querySelector("#random-image");
+randomImageButton.onclick = e => {
+    URL.revokeObjectURL(image.src);
+    image.src = "https://picsum.photos/800/400";
+};
 
-fileHE.onchange = (e) => {
+const fileHE = document.querySelector("#file");
+fileHE.onchange = e => {
     const file = e.target.files[0];
     image.src = URL.createObjectURL(file);
 };
