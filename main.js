@@ -4,7 +4,7 @@ const image = new Image();
 image.onload = analysis;
 image.onerror = () => URL.revokeObjectURL(image.src);
 image.setAttribute("crossorigin", "anonymous");
-image.src = "images/clover_days.jpg";
+// image.src = "images/clover_days.jpg";
 // image.src = "images/2.jpg";
 // image.src = "images/kyu.jpg";
 // image.src = "images/images.png";
@@ -13,10 +13,12 @@ image.src = "images/clover_days.jpg";
 // image.src = "images/しもんきん.jpg";
 // image.src = "images/野獣先輩.png";
 // image.src = "images/watya.jpg";
+image.src = "https://picsum.photos/800/400";
 
 const canvas = document.querySelector("canvas");
 const context = canvas.getContext("2d");
 const resultHE = document.querySelector("#result");
+const noColorHE = document.querySelector("#no-color");
 let colorCount = 12;
 let ignoreColorLevel = 220;
 
@@ -30,6 +32,12 @@ function analysis() {
     
     while (resultHE.firstChild) {
         resultHE.removeChild(resultHE.firstChild);
+    }
+    if (newColorArray.length > 0) {
+        noColorHE.style.display = "none";
+    }
+    else {
+        noColorHE.style.display = "";
     }
     for (const color of newColorArray) {
         const colorHE = document.createElement("div");

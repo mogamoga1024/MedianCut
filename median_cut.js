@@ -19,7 +19,7 @@ function toColorArray(imageData) {
 function medianCut(colorArray, maxColorGroupCount = 12, ignoreColorLevel = 220) {
     // 薄い色は無視する
     const colorGroupArray = [colorArray.filter(color =>
-        color.red < ignoreColorLevel || color.green < ignoreColorLevel || color.blue < ignoreColorLevel
+        color.red <= ignoreColorLevel || color.green <= ignoreColorLevel || color.blue <= ignoreColorLevel
     )];
 
     if (colorGroupArray[0].length === 0) {
