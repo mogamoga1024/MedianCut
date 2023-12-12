@@ -6,15 +6,16 @@ const image = new Image();
 
 image.onload = main;
 image.setAttribute("crossorigin", "anonymous");
-image.src = "images/clover_days.jpg";
+// image.src = "images/clover_days.jpg";
 // image.src = "images/2.jpg";
+image.src = "images/kyu.jpg";
 // image.src = "images/images.png";
 // image.src = "images/jeff.jpg";
 // image.src = "images/sanrio.jpg";
 // image.src = "images/しもんきん.jpg";
 // image.src = "https://picsum.photos/800/400";
 // image.src = "images/野獣先輩.png";
-image.src = "images/watya.jpg";
+// image.src = "images/watya.jpg";
 
 function main() {
     canvas.width = image.width;
@@ -22,7 +23,7 @@ function main() {
     context.drawImage(image, 0, 0);
     const imageData = context.getImageData(0, 0, canvas.width, canvas.height).data;
     const colorArray = toColorArray(imageData);
-    const newColorArray = medianCut(colorArray, 30);
+    const newColorArray = medianCut(colorArray, 5);
     
     const resultHE = document.querySelector("#result");
     for (const color of newColorArray) {
