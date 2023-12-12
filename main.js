@@ -14,6 +14,7 @@ image.src = "images/clover_days.jpg";
 // image.src = "images/しもんきん.jpg";
 // image.src = "https://picsum.photos/800/400";
 // image.src = "images/野獣先輩.png";
+image.src = "images/watya.jpg";
 
 function main() {
     canvas.width = image.width;
