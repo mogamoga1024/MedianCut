@@ -1,7 +1,7 @@
 
 const image = new Image();
 
-image.onload = main;
+image.onload = analysis;
 image.onerror = () => URL.revokeObjectURL(image.src);
 image.setAttribute("crossorigin", "anonymous");
 image.src = "images/clover_days.jpg";
@@ -14,17 +14,19 @@ image.src = "images/clover_days.jpg";
 // image.src = "images/野獣先輩.png";
 // image.src = "images/watya.jpg";
 
-function main() {
-    const canvas = document.querySelector("canvas");
-    const context = canvas.getContext("2d");
+const canvas = document.querySelector("canvas");
+const context = canvas.getContext("2d");
+const resultHE = document.querySelector("#result");
+let colorCount = 12;
+
+function analysis() {
     canvas.width = image.width;
     canvas.height = image.height;
     context.drawImage(image, 0, 0);
     const imageData = context.getImageData(0, 0, canvas.width, canvas.height).data;
     const colorArray = toColorArray(imageData);
-    const newColorArray = medianCut(colorArray, 12);
+    const newColorArray = medianCut(colorArray, colorCount);
     
-    const resultHE = document.querySelector("#result");
     while (resultHE.firstChild) {
         resultHE.removeChild(resultHE.firstChild);
     }
@@ -46,4 +48,15 @@ const fileHE = document.querySelector("#file");
 fileHE.onchange = e => {
     const file = e.target.files[0];
     image.src = URL.createObjectURL(file);
+};
+
+const colorCountHE = document.querySelector("#color-count");
+colorCountHE.setAttribute("value", colorCount);
+colorCountHE.onblur = e => {
+    const val = Number(e.target.value);
+    if (val < 1) {
+        e.target.value = colorCount;
+    }
+    colorCount = val;
+    analysis();
 };
