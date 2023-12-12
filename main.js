@@ -8,6 +8,7 @@ image.onload = main;
 image.setAttribute("crossorigin", "anonymous");
 image.src = "images/clover_days.jpg";
 image.src = "images/2.jpg";
+image.src = "images/images.png";
 // image.src = "images/jeff.jpg";
 // image.src = "images/sanrio.jpg";
 // image.src = "images/しもんきん.jpg";
@@ -19,7 +20,7 @@ function main() {
     context.drawImage(image, 0, 0);
     const imageData = context.getImageData(0, 0, canvas.width, canvas.height).data;
     const colorArray = toColorArray(imageData);
-    const newColorArray = medianCut(colorArray, 5);
+    const newColorArray = medianCut(colorArray, 30);
     
     const resultHE = document.querySelector("#result");
     for (const color of newColorArray) {
@@ -59,7 +60,6 @@ function medianCut(colorArray, maxColorGroupCount = 4) {
                 maxLengthIndex = i;
             }
         }
-        if (maxLength <= 1) break;
         const colorGroup = colorGroupArray[maxLengthIndex];
         colorGroupArray.splice(maxLengthIndex, 1);
         
@@ -102,8 +102,9 @@ function medianCut(colorArray, maxColorGroupCount = 4) {
                 upperGropu.push(color);
             }
         }
-        colorGroupArray.push(lowerGroup);
-        colorGroupArray.push(upperGropu);
+
+        if (lowerGroup.length > 0) colorGroupArray.push(lowerGroup);
+        if (upperGropu.length > 0) colorGroupArray.push(upperGropu);
     }
 
     return colorGroupArray.map(colorGroup => {
