@@ -7,12 +7,13 @@ const image = new Image();
 image.onload = main;
 image.setAttribute("crossorigin", "anonymous");
 image.src = "images/clover_days.jpg";
-image.src = "images/2.jpg";
-image.src = "images/images.png";
+// image.src = "images/2.jpg";
+// image.src = "images/images.png";
 // image.src = "images/jeff.jpg";
 // image.src = "images/sanrio.jpg";
 // image.src = "images/しもんきん.jpg";
 // image.src = "https://picsum.photos/800/400";
+// image.src = "images/野獣先輩.png";
 
 function main() {
     canvas.width = image.width;
@@ -49,7 +50,10 @@ function toColorArray(imageData) {
 }
 
 function medianCut(colorArray, maxColorGroupCount = 4) {
-    const colorGroupArray = [[...colorArray]];
+    // 薄い色は無視する
+    const colorGroupArray = [colorArray.filter(color => {
+        return color.red < 220 || color.green < 220 || color.blue < 220 
+    })];
 
     for (let i = 0; i < maxColorGroupCount - 1; i++) {
         // 最も要素が多い色空間を選択
