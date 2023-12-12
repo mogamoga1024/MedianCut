@@ -2,6 +2,7 @@
 const image = new Image();
 
 image.onload = main;
+image.onerror = () => URL.revokeObjectURL(image.src);
 image.setAttribute("crossorigin", "anonymous");
 image.src = "images/clover_days.jpg";
 // image.src = "images/2.jpg";
@@ -36,5 +37,6 @@ function main() {
 const fileHE = document.querySelector("#file");
 
 fileHE.onchange = (e) => {
-    console.log(e);
+    const file = e.target.files[0];
+    image.src = URL.createObjectURL(file);
 };
