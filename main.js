@@ -57,7 +57,9 @@ colorCountHE.onblur = e => {
     const val = Number(e.target.value);
     if (val < 1) {
         e.target.value = colorCount;
+        return;
     }
+    e.target.value = val;
     colorCount = val;
     analysis();
 };
@@ -68,7 +70,9 @@ ignoreColorLevelHE.onblur = e => {
     const val = Number(e.target.value);
     if (val < 0 || val > 255) {
         e.target.value = ignoreColorLevel;
+        return;
     }
+    e.target.value = val;
     ignoreColorLevel = val;
     analysis();
 };

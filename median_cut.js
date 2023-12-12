@@ -22,6 +22,10 @@ function medianCut(colorArray, maxColorGroupCount = 12, ignoreColorLevel = 220) 
         color.red < ignoreColorLevel || color.green < ignoreColorLevel || color.blue < ignoreColorLevel
     )];
 
+    if (colorGroupArray[0].length === 0) {
+        return [];
+    }
+
     for (let i = 0; i < maxColorGroupCount - 1; i++) {
         // 最も要素が多い色空間を選択
         let maxLength = 0, maxLengthIndex = 0;
