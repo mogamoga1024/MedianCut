@@ -54,15 +54,15 @@ function medianCut(colorArray, maxColorGroupCount = 12, ignoreColorLevel = 220) 
         }
 
         let colorName = undefined;
-        const redDiff   = statistics.red.max   - statistics.red.min;
-        const greenDiff = statistics.green.max - statistics.green.min;
-        const blueDiff  = statistics.blue.max  - statistics.blue.min;
+        const diffRed   = statistics.red.max   - statistics.red.min;
+        const diffGreen = statistics.green.max - statistics.green.min;
+        const diffBlue  = statistics.blue.max  - statistics.blue.min;
 
         // RGBで濃度差が大きい要素を求める
-        if (redDiff >= greenDiff && redDiff >= blueDiff) {
+        if (diffRed >= diffGreen && diffRed >= diffBlue) {
             colorName = "red";
         }
-        else if (greenDiff >= redDiff && greenDiff >= blueDiff) {
+        else if (diffGreen >= diffRed && diffGreen >= diffBlue) {
             colorName = "green";
         }
         else {
@@ -99,5 +99,24 @@ function medianCut(colorArray, maxColorGroupCount = 12, ignoreColorLevel = 220) 
             green: Math.round(totalColor.green / colorGroup.length),
             blue:  Math.round(totalColor.blue  / colorGroup.length)
         };
+    }).sort((a, b) => {
+        const sumA = a.red + a.green + a.blue;
+        const sumB = b.red + b.green + b.blue;
+        if (sumA === sumB) {
+            if (a.red === b.red) {
+                if (a.green === b.green) {
+                    return a.blue - b.blue;
+                }
+                else {
+                    return a.green - b.green;
+                }
+            }
+            else {
+                return a.red - b.red;
+            }
+        }
+        else {
+            return sumA - sumB;
+        }
     });
 }
