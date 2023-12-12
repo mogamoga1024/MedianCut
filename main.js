@@ -26,6 +26,9 @@ function main() {
     const newColorArray = medianCut(colorArray, 12);
     
     const resultHE = document.querySelector("#result");
+    while (resultHE.firstChild) {
+        resultHE.removeChild(resultHE.firstChild);
+    }
     for (const color of newColorArray) {
         const colorHE = document.createElement("div");
         colorHE.classList.add("color");
