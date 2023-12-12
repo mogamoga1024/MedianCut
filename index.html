@@ -7,7 +7,18 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <input id="file" type="file">
+  <div id="config-wrapper">
+    <div class="config">
+      <button id="random-image">ランダム画像</button>
+    </div>
+    <div class="config">
+      <input id="file" type="file">
+    </div>
+    <div class="config">
+      <label id="color-count-label" for="color-count">色数</label>
+      <input id="color-count" type="number" min="1" value="12">
+    </div>
+  </div>
   <canvas></canvas>
   <div id="result">
   </div>

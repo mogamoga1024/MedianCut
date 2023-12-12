@@ -4,9 +4,28 @@ body {
   padding: 16px;
 }
 
-#file {
-  margin-bottom: 16px;
+button, input {
   font-size: 16px;
+}
+
+#config-wrapper {
+  margin-bottom: 16px;
+}
+
+.config {
+  margin-bottom: 4px;
+}
+
+.config:last-of-type {
+  margin-bottom: 0;
+}
+
+#color-count-label {
+  display: inline-block;
+}
+
+#color-count {
+  width: 60px;
 }
 
 canvas {

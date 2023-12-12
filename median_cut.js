@@ -16,7 +16,7 @@ function toColorArray(imageData) {
     return colorArray;
 }
 
-function medianCut(colorArray, maxColorGroupCount = 8) {
+function medianCut(colorArray, maxColorGroupCount = 12) {
     // 薄い色は無視する
     const colorGroupArray = [colorArray.filter(color => {
         return color.red < 220 || color.green < 220 || color.blue < 220 
