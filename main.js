@@ -6,9 +6,9 @@ const image = new Image();
 
 image.onload = main;
 image.setAttribute("crossorigin", "anonymous");
-// image.src = "images/clover_days.jpg";
+image.src = "images/clover_days.jpg";
 // image.src = "images/2.jpg";
-image.src = "images/kyu.jpg";
+// image.src = "images/kyu.jpg";
 // image.src = "images/images.png";
 // image.src = "images/jeff.jpg";
 // image.src = "images/sanrio.jpg";
@@ -23,7 +23,7 @@ function main() {
     context.drawImage(image, 0, 0);
     const imageData = context.getImageData(0, 0, canvas.width, canvas.height).data;
     const colorArray = toColorArray(imageData);
-    const newColorArray = medianCut(colorArray, 5);
+    const newColorArray = medianCut(colorArray, 12);
     
     const resultHE = document.querySelector("#result");
     for (const color of newColorArray) {
@@ -69,17 +69,19 @@ function medianCut(colorArray, maxColorGroupCount = 8) {
         const colorGroup = colorGroupArray[maxLengthIndex];
         colorGroupArray.splice(maxLengthIndex, 1);
         
+        // 色空間のRGBの各要素の最大最小を求める
         const statistics = {
             red:   {min: 255, max: 0},
             green: {min: 255, max: 0},
             blue:  {min: 255, max: 0}
         }
         for (const color of colorGroup) {
-            for (const key in statistics) {
-                const obj = statistics[key];
-                obj.min = Math.min(obj.min, color[key]);
-                obj.max = Math.max(obj.max, color[key]);
-            }
+            statistics.red.min   = Math.min(statistics.red.min, color.red);
+            statistics.red.max   = Math.max(statistics.red.max, color.red);
+            statistics.green.min = Math.min(statistics.green.min, color.green);
+            statistics.green.max = Math.max(statistics.green.max, color.green);
+            statistics.blue.min  = Math.min(statistics.blue.min, color.blue);
+            statistics.blue.max  = Math.max(statistics.blue.max, color.blue);
         }
 
         let colorName = undefined;
@@ -87,7 +89,7 @@ function medianCut(colorArray, maxColorGroupCount = 8) {
         const greenDiff = statistics.green.max - statistics.green.min;
         const blueDiff  = statistics.blue.max  - statistics.blue.min;
 
-        // RGBで強弱が大きい要素を求める
+        // RGBで濃度差が大きい要素を求める
         if (redDiff >= greenDiff && redDiff >= blueDiff) {
             colorName = "red";
         }
