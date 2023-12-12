@@ -24,9 +24,11 @@
     </div>
   </div>
   <canvas></canvas>
+  <div id="processing" class="message">処理中…</div>
+  <div id="error" class="message" style="display: none;">エラー！本当に画像？</div>
   <div id="result">
   </div>
-  <div id="no-color" style="display: none;">結果！ないよ！！薄さ無視レベルを255にすると出るんじゃない？</div>
+  <div id="no-color" class="message" style="display: none;">結果！ないよ！！薄さ無視レベルを255にすると出るんじゃない？</div>
   <script src="median_cut.js"></script>
   <script src="main.js"></script>
 </body>

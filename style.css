@@ -51,6 +51,6 @@ canvas {
   border-radius: 10%;
 }
 
-#no-color {
+.message {
   font-size: 24px;
 }
