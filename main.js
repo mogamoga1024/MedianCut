@@ -18,6 +18,7 @@ const canvas = document.querySelector("canvas");
 const context = canvas.getContext("2d");
 const resultHE = document.querySelector("#result");
 let colorCount = 12;
+let ignoreColorLevel = 220;
 
 function analysis() {
     canvas.width = image.width;
@@ -25,7 +26,7 @@ function analysis() {
     context.drawImage(image, 0, 0);
     const imageData = context.getImageData(0, 0, canvas.width, canvas.height).data;
     const colorArray = toColorArray(imageData);
-    const newColorArray = medianCut(colorArray, colorCount);
+    const newColorArray = medianCut(colorArray, colorCount, ignoreColorLevel);
     
     while (resultHE.firstChild) {
         resultHE.removeChild(resultHE.firstChild);
@@ -58,5 +59,16 @@ colorCountHE.onblur = e => {
         e.target.value = colorCount;
     }
     colorCount = val;
+    analysis();
+};
+
+const ignoreColorLevelHE = document.querySelector("#ignore-color-level");
+ignoreColorLevelHE.setAttribute("value", ignoreColorLevel);
+ignoreColorLevelHE.onblur = e => {
+    const val = Number(e.target.value);
+    if (val < 0 || val > 255) {
+        e.target.value = ignoreColorLevel;
+    }
+    ignoreColorLevel = val;
     analysis();
 };

@@ -16,11 +16,11 @@ function toColorArray(imageData) {
     return colorArray;
 }
 
-function medianCut(colorArray, maxColorGroupCount = 12) {
+function medianCut(colorArray, maxColorGroupCount = 12, ignoreColorLevel = 220) {
     // 薄い色は無視する
-    const colorGroupArray = [colorArray.filter(color => {
-        return color.red < 220 || color.green < 220 || color.blue < 220 
-    })];
+    const colorGroupArray = [colorArray.filter(color =>
+        color.red < ignoreColorLevel || color.green < ignoreColorLevel || color.blue < ignoreColorLevel
+    )];
 
     for (let i = 0; i < maxColorGroupCount - 1; i++) {
         // 最も要素が多い色空間を選択

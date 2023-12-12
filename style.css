@@ -20,11 +20,15 @@ button, input {
   margin-bottom: 0;
 }
 
-#color-count-label {
+.config label {
   display: inline-block;
 }
 
 #color-count {
+  width: 60px;
+}
+
+#ignore-color-level {
   width: 60px;
 }
 

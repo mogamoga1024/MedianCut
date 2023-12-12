@@ -15,8 +15,12 @@
       <input id="file" type="file">
     </div>
     <div class="config">
-      <label id="color-count-label" for="color-count">色数</label>
+      <label for="color-count">色数</label>
       <input id="color-count" type="number" min="1">
+    </div>
+    <div class="config">
+      <label for="ignore-color-level">白の許容レベル（弱：255 ～ 強：0）</label>
+      <input id="ignore-color-level" type="number" min="0" max="255">
     </div>
   </div>
   <canvas></canvas>
