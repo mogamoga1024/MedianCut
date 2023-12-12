@@ -7,15 +7,14 @@ canvas {
 
 #result {
   display: flex;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 2px;
 }
 
 .color {
-  width: 150px;
-  height: 150px;
-  background-color: red;
+  width: 100px;
+  height: 100px;
   border: 1px solid black;
-}
-
-.color:not(:first-of-type) {
-  margin-left: 8px;
+  border-radius: 10%;
 }
