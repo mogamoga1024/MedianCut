@@ -1,4 +1,7 @@
 
+/**
+ * 引数はImageDataオブジェクトのdataプロパティであること
+ */
 function toColorArray(imageData) {
     const colorArray = [];
     for (let i = 0; i < imageData.length; i += 4) {
