@@ -18,27 +18,27 @@ function toColorArray(imageData) {
 
 function medianCut(colorArray, maxColorGroupCount = 12, ignoreColorLevel = 255) {
     // 薄い色は無視する
-    const colorGroupArray = [colorArray.filter(color =>
+    const tmpColorGroupArray = [colorArray.filter(color =>
         color.red <= ignoreColorLevel || color.green <= ignoreColorLevel || color.blue <= ignoreColorLevel
     )];
 
-    if (colorGroupArray[0].length === 0) {
+    if (tmpColorGroupArray[0].length === 0) {
         return [];
     }
 
-    let returnColorGroupArray = [];
+    let colorGroupArray = [];
 
     for (let i = 0; i < maxColorGroupCount - 1; i++) {
         // 最も要素が多い色空間を選択
         let maxLength = 0, maxLengthIndex = 0;
-        for (let i = 0; i < colorGroupArray.length; i++) {
-            if (colorGroupArray[i].length > maxLength) {
-                maxLength = colorGroupArray[i].length;
+        for (let i = 0; i < tmpColorGroupArray.length; i++) {
+            if (tmpColorGroupArray[i].length > maxLength) {
+                maxLength = tmpColorGroupArray[i].length;
                 maxLengthIndex = i;
             }
         }
-        const colorGroup = colorGroupArray[maxLengthIndex];
-        colorGroupArray.splice(maxLengthIndex, 1);
+        const colorGroup = tmpColorGroupArray[maxLengthIndex];
+        tmpColorGroupArray.splice(maxLengthIndex, 1);
         
         // 色空間のRGBの各要素の最大最小を求める
         const statistics = {
@@ -62,7 +62,7 @@ function medianCut(colorArray, maxColorGroupCount = 12, ignoreColorLevel = 255) 
 
         // 単色は分割する意味がない
         if (diffRed === 0 && diffGreen === 0 && diffBlue === 0) {
-            returnColorGroupArray.push(colorGroup);
+            colorGroupArray.push(colorGroup);
             continue;
         }
 
@@ -89,14 +89,14 @@ function medianCut(colorArray, maxColorGroupCount = 12, ignoreColorLevel = 255) 
                 upperGropu.push(color);
             }
         }
-        colorGroupArray.push(lowerGroup);
-        colorGroupArray.push(upperGropu);
+        tmpColorGroupArray.push(lowerGroup);
+        tmpColorGroupArray.push(upperGropu);
     }
 
-    returnColorGroupArray = returnColorGroupArray.concat(colorGroupArray);
+    colorGroupArray = colorGroupArray.concat(tmpColorGroupArray);
 
     // 分割された色空間の平均値を求める
-    return returnColorGroupArray.map(colorGroup => {
+    return colorGroupArray.map(colorGroup => {
         const totalColor = colorGroup.reduce((total, color) => {
             total.red   += color.red;
             total.green += color.green;
