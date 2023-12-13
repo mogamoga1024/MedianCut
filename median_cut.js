@@ -114,21 +114,15 @@ function medianCut(colorArray, maxColorGroupCount = 12, ignoreColorLevel = 255) 
     }).sort((a, b) => {
         const sumA = a.red + a.green + a.blue;
         const sumB = b.red + b.green + b.blue;
-        if (sumA === sumB) {
-            if (a.red === b.red) {
-                if (a.green === b.green) {
-                    return a.blue - b.blue;
-                }
-                else {
-                    return a.green - b.green;
-                }
-            }
-            else {
-                return a.red - b.red;
-            }
-        }
-        else {
+        if (sumA !== sumB) {
             return sumA - sumB;
         }
+        if (a.red !== b.red) {
+            return a.red - b.red; 
+        }
+        if (a.green !== b.green) {
+            return a.green - b.green;
+        }
+        return a.blue - b.blue;
     });
 }
