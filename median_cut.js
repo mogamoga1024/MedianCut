@@ -5,7 +5,7 @@
 function toColorArray(imageData) {
     const colorArray = [];
     for (let i = 0; i < imageData.length; i += 4) {
-        // 透明は排除する。
+        // 透明は排除する
         if (imageData[i + 3] === 0) {
             continue;
         }
