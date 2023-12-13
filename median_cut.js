@@ -16,7 +16,7 @@ function toColorArray(imageData) {
     return colorArray;
 }
 
-function medianCut(colorArray, maxColorGroupCount = 12, ignoreColorLevel = 220) {
+function medianCut(colorArray, maxColorGroupCount = 12, ignoreColorLevel = 255) {
     // 薄い色は無視する
     const colorGroupArray = [colorArray.filter(color =>
         color.red <= ignoreColorLevel || color.green <= ignoreColorLevel || color.blue <= ignoreColorLevel
@@ -25,6 +25,8 @@ function medianCut(colorArray, maxColorGroupCount = 12, ignoreColorLevel = 220) 
     if (colorGroupArray[0].length === 0) {
         return [];
     }
+
+    let returnColorGroupArray = [];
 
     for (let i = 0; i < maxColorGroupCount - 1; i++) {
         // 最も要素が多い色空間を選択
@@ -58,6 +60,12 @@ function medianCut(colorArray, maxColorGroupCount = 12, ignoreColorLevel = 220) 
         const diffGreen = statistics.green.max - statistics.green.min;
         const diffBlue  = statistics.blue.max  - statistics.blue.min;
 
+        // 単色は分割する意味がない
+        if (diffRed === 0 && diffGreen === 0 && diffBlue === 0) {
+            returnColorGroupArray.push(colorGroup);
+            continue;
+        }
+
         // RGBで濃度差が大きい要素を求める
         if (diffRed >= diffGreen && diffRed >= diffBlue) {
             colorName = "red";
@@ -81,13 +89,14 @@ function medianCut(colorArray, maxColorGroupCount = 12, ignoreColorLevel = 220) 
                 upperGropu.push(color);
             }
         }
-
-        if (lowerGroup.length > 0) colorGroupArray.push(lowerGroup);
-        if (upperGropu.length > 0) colorGroupArray.push(upperGropu);
+        colorGroupArray.push(lowerGroup);
+        colorGroupArray.push(upperGropu);
     }
 
+    returnColorGroupArray = returnColorGroupArray.concat(colorGroupArray);
+
     // 分割された色空間の平均値を求める
-    return colorGroupArray.map(colorGroup => {
+    return returnColorGroupArray.map(colorGroup => {
         const totalColor = colorGroup.reduce((total, color) => {
             total.red   += color.red;
             total.green += color.green;
