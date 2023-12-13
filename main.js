@@ -8,7 +8,7 @@ image.onerror = () => {
     URL.revokeObjectURL(image.src);
 };
 image.setAttribute("crossorigin", "anonymous");
-// image.src = "images/clover_days.jpg";
+image.src = "images/clover_days.jpg";
 // image.src = "images/2.jpg";
 // image.src = "images/kyu.jpg";
 // image.src = "images/images.png";
@@ -17,7 +17,7 @@ image.setAttribute("crossorigin", "anonymous");
 // image.src = "images/しもんきん.jpg";
 // image.src = "images/野獣先輩.png";
 // image.src = "images/watya.jpg";
-image.src = "https://picsum.photos/800/400";
+// image.src = "https://picsum.photos/800/400";
 
 const canvas = document.querySelector("canvas");
 const context = canvas.getContext("2d");
@@ -34,9 +34,10 @@ function analysis() {
     processingHE.style.display = "none";
     errorHE.style.display = "none";
     canvas.style.display = "block";
+    canvas.style.maxWidth = `${image.width}px`;
     canvas.width = image.width;
     canvas.height = image.height;
-    context.drawImage(image, 0, 0);
+    context.drawImage(image, 0, 0, image.width, image.height, 0, 0, canvas.width, canvas.height);
     const imageData = context.getImageData(0, 0, canvas.width, canvas.height).data;
     const colorArray = toColorArray(imageData);
     const newColorArray = medianCut(colorArray, colorCount, ignoreColorLevel);
