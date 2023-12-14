@@ -73,6 +73,8 @@ domRandomImage.onclick = e => {
 
 const domBtnFile = document.querySelector("#btn-file");
 const domFile = document.querySelector("#file");
+const domFileName = document.querySelector("#file-name");
+domBtnFile.onclick = e => domFile.click();
 domFile.onchange = e => {
     const file = e.target.files[0];
     if (file == null) {
@@ -81,6 +83,7 @@ domFile.onchange = e => {
     domProcessing.style.display = "";
     canvas.style.display = "none";
     resetResult();
+    domFileName.textContent = file.name;
     image.src = URL.createObjectURL(file);
 };
 
