@@ -1,34 +1,35 @@
 
 /**
- * 引数はImageDataオブジェクトのdataプロパティであること
+ * 引数はImageDataオブジェクトであること
  */
-function toColorArray(imageData) {
-    const colorArray = [];
-    for (let i = 0; i < imageData.length; i += 4) {
+function medianCut(imageData, maxColorGroupCount = 12, ignoreColorLevel = 255) {
+    const strColorArray = [];
+    for (let i = 0; i < imageData.data.length; i += 4) {
         // 透明は排除する
-        if (imageData[i + 3] === 0) {
+        if (imageData.data[i + 3] === 0) {
             continue;
         }
-        const red   = imageData[i];
-        const green = imageData[i + 1];
-        const blue  = imageData[i + 2];
-        colorArray.push({
-            red, green, blue
-        });
+        const red   = imageData.data[i];
+        const green = imageData.data[i + 1];
+        const blue  = imageData.data[i + 2];
+        // 薄い色は排除する
+        if (
+            red   > ignoreColorLevel &&
+            green > ignoreColorLevel &&
+            blue  > ignoreColorLevel
+        ) {
+            continue;
+        }
+        strColorArray.push(`{"red":${red},"green":${green},"blue":${blue}}`);
     }
-    return colorArray;
-}
-
-function medianCut(colorArray, maxColorGroupCount = 12, ignoreColorLevel = 255) {
-    // 薄い色は無視する
-    const tmpColorGroupArray = [colorArray.filter(color =>
-        color.red <= ignoreColorLevel || color.green <= ignoreColorLevel || color.blue <= ignoreColorLevel
-    )];
-
-    if (tmpColorGroupArray[0].length === 0) {
+    if (strColorArray.length === 0) {
         return [];
     }
+    // 重複削除
+    const uniqueStrColorArray = [...new Set(strColorArray)];
+    const colorArray = uniqueStrColorArray.map(str => JSON.parse(str));
 
+    const tmpColorGroupArray = [colorArray];
     let colorGroupArray = [];
 
     for (let i = 0; i < maxColorGroupCount - 1; i++) {

@@ -17,6 +17,7 @@ image.setAttribute("crossorigin", "anonymous");
 // image.src = "images/しもんきん.jpg";
 // image.src = "images/野獣先輩.png";
 // image.src = "images/watya.jpg";
+// image.src = "images/bug.png";
 image.src = "https://picsum.photos/800/400";
 
 const canvas = document.querySelector("canvas");
@@ -26,7 +27,7 @@ const domProcessing = document.querySelector("#processing");
 const domError = document.querySelector("#error");
 const domNoColor = document.querySelector("#no-color");
 let colorCount = 12;
-let ignoreColorLevel = 220;
+let ignoreColorLevel = 255;
 
 canvas.style.display = "none";
 
@@ -38,8 +39,8 @@ function analysis() {
     canvas.width = image.width;
     canvas.height = image.height;
     context.drawImage(image, 0, 0, image.width, image.height, 0, 0, canvas.width, canvas.height);
-    const imageData = context.getImageData(0, 0, canvas.width, canvas.height).data;
-    const colorArray = medianCut(toColorArray(imageData), colorCount, ignoreColorLevel);
+    const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+    const colorArray = medianCut(imageData, colorCount, ignoreColorLevel);
     
     if (colorArray.length > 0) {
         domNoColor.style.display = "none";
