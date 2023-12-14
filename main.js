@@ -3,8 +3,8 @@ const image = new Image();
 
 image.onload = analysis;
 image.onerror = () => {
-    processingHE.style.display = "none";
-    errorHE.style.display = "";
+    domProcessing.style.display = "none";
+    domError.style.display = "";
     URL.revokeObjectURL(image.src);
 };
 image.setAttribute("crossorigin", "anonymous");
@@ -21,18 +21,18 @@ image.src = "images/clover_days.jpg";
 
 const canvas = document.querySelector("canvas");
 const context = canvas.getContext("2d");
-const resultHE = document.querySelector("#result");
-const processingHE = document.querySelector("#processing");
-const errorHE = document.querySelector("#error");
-const noColorHE = document.querySelector("#no-color");
+const domResult = document.querySelector("#result");
+const domProcessing = document.querySelector("#processing");
+const domError = document.querySelector("#error");
+const domNoColor = document.querySelector("#no-color");
 let colorCount = 12;
 let ignoreColorLevel = 220;
 
 canvas.style.display = "none";
 
 function analysis() {
-    processingHE.style.display = "none";
-    errorHE.style.display = "none";
+    domProcessing.style.display = "none";
+    domError.style.display = "none";
     canvas.style.display = "block";
     canvas.style.maxWidth = `${image.width}px`;
     canvas.width = image.width;
@@ -43,70 +43,71 @@ function analysis() {
     const newColorArray = medianCut(colorArray, colorCount, ignoreColorLevel);
     
     if (newColorArray.length > 0) {
-        noColorHE.style.display = "none";
+        domNoColor.style.display = "none";
     }
     else {
-        noColorHE.style.display = "";
+        domNoColor.style.display = "";
     }
     for (const color of newColorArray) {
-        const colorHE = document.createElement("div");
-        colorHE.classList.add("color");
-        colorHE.style.backgroundColor = `rgb(${color.red}, ${color.green}, ${color.blue})`;
-        resultHE.appendChild(colorHE);
+        const domColor = document.createElement("div");
+        domColor.classList.add("color");
+        domColor.style.backgroundColor = `rgb(${color.red}, ${color.green}, ${color.blue})`;
+        domResult.appendChild(domColor);
     }
 }
 
 function resetResult() {
-    while (resultHE.firstChild) {
-        resultHE.removeChild(resultHE.firstChild);
+    while (domResult.firstChild) {
+        domResult.removeChild(domResult.firstChild);
     }
 }
 
-const randomImageButton = document.querySelector("#random-image");
-randomImageButton.onclick = e => {
-    processingHE.style.display = "";
+const domRandomImage = document.querySelector("#random-image");
+domRandomImage.onclick = e => {
+    domProcessing.style.display = "";
     canvas.style.display = "none";
     resetResult();
     URL.revokeObjectURL(image.src);
     image.src = "https://picsum.photos/800/400";
 };
 
-const fileHE = document.querySelector("#file");
-fileHE.onchange = e => {
+const domBtnFile = document.querySelector("#btn-file");
+const domFile = document.querySelector("#file");
+domFile.onchange = e => {
     const file = e.target.files[0];
     if (file == null) {
         return;
     }
-    processingHE.style.display = "";
+    domProcessing.style.display = "";
     canvas.style.display = "none";
     resetResult();
     image.src = URL.createObjectURL(file);
 };
 
-const colorCountHE = document.querySelector("#color-count");
-colorCountHE.setAttribute("value", colorCount);
-colorCountHE.onblur = e => {
+const domColorCount = document.querySelector("#color-count");
+domColorCount.setAttribute("value", colorCount);
+domColorCount.onblur = e => {
     const val = Number(e.target.value);
     if (val < 1) {
         e.target.value = colorCount;
         return;
     }
-    processingHE.style.display = "";
+    domProcessing.style.display = "";
     resetResult();
     e.target.value = val;
     colorCount = val;
     analysis();
 };
 
-const ignoreColorLevelHE = document.querySelector("#ignore-color-level");
-ignoreColorLevelHE.setAttribute("value", ignoreColorLevel);
-ignoreColorLevelHE.onblur = e => {
+const domIgnoreColorLevel = document.querySelector("#ignore-color-level");
+domIgnoreColorLevel.setAttribute("value", ignoreColorLevel);
+domIgnoreColorLevel.onblur = e => {
     const val = Number(e.target.value);
     if (val < 0 || val > 255) {
         e.target.value = ignoreColorLevel;
         return;
     }
-    processingHE.style.display = "";
+    domProcessing.style.display = "";
     resetResult();
     e.target.value = val;
     ignoreColorLevel = val;
