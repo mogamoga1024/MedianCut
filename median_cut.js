@@ -67,6 +67,9 @@ function medianCut(imageData, maxColorGroupCount = 12, ignoreColorLevel = 255) {
         // 単色は分割する意味がない
         if (diffRed === 0 && diffGreen === 0 && diffBlue === 0) {
             colorGroupArray.push(colorGroup);
+            if (tmpColorGroupArray.length === 0) {
+                break;
+            }
             continue;
         }
 
