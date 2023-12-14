@@ -39,16 +39,15 @@ function analysis() {
     canvas.height = image.height;
     context.drawImage(image, 0, 0, image.width, image.height, 0, 0, canvas.width, canvas.height);
     const imageData = context.getImageData(0, 0, canvas.width, canvas.height).data;
-    const colorArray = toColorArray(imageData);
-    const newColorArray = medianCut(colorArray, colorCount, ignoreColorLevel);
+    const colorArray = medianCut(toColorArray(imageData), colorCount, ignoreColorLevel);
     
-    if (newColorArray.length > 0) {
+    if (colorArray.length > 0) {
         domNoColor.style.display = "none";
     }
     else {
         domNoColor.style.display = "";
     }
-    for (const color of newColorArray) {
+    for (const color of colorArray) {
         const domColor = document.createElement("div");
         domColor.classList.add("color");
         domColor.style.backgroundColor = `rgb(${color.red}, ${color.green}, ${color.blue})`;
