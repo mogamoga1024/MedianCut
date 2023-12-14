@@ -8,6 +8,44 @@ button, input {
   font-size: 16px;
 }
 
+input[type="file"] {
+  display: none;
+}
+
+.btn {
+  display: inline-block;
+  height: 28px;
+  line-height: 28px;
+  padding: 0 8px;
+  border-radius: 5px;
+  border: 1px solid mediumblue;
+  font-weight: 600;
+  cursor: pointer;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  color: mediumblue;
+  background-color: white;
+  text-align: center;
+}
+
+.btn {
+  transition: background-color 0.2s;
+}
+
+@media screen and (width > 480px) {
+  .btn:hover {
+    background-color: lightcyan;
+  }
+}
+
+@media screen and (width <= 480px) {
+  .btn:active {
+    background-color: lightcyan;
+  }
+}
+
 #config-wrapper {
   margin-bottom: 16px;
 }
