@@ -29,7 +29,6 @@ const dstContext = dstCanvas.getContext("2d");
 const domResult = document.querySelector("#result");
 const domProcessing = document.querySelector("#processing");
 const domError = document.querySelector("#error");
-const domNoColor = document.querySelector("#no-color");
 let colorCount = 64;
 
 canvasWrapper.style.display = "none";
@@ -47,12 +46,6 @@ function analysis() {
     const colorArray = medianCut(imageData, colorCount);
     dstContext.putImageData(imageData, 0, 0);
     
-    if (colorArray.length > 0) {
-        domNoColor.style.display = "none";
-    }
-    else {
-        domNoColor.style.display = "";
-    }
     for (const color of colorArray) {
         const domColor = document.createElement("div");
         domColor.classList.add("color");
