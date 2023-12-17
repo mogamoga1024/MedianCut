@@ -23,7 +23,7 @@ image.src = "https://picsum.photos/800/400";
 
 const canvasWrapper = document.querySelector("#canvas-wrapper");
 const srcCanvas = document.querySelector("#original-image");
-const srcContext = srcCanvas.getContext("2d");
+const srcContext = srcCanvas.getContext("2d", {willReadFrequently: true});
 const dstCanvas = document.querySelector("#result-image");
 const dstContext = dstCanvas.getContext("2d");
 const domResult = document.querySelector("#result");
