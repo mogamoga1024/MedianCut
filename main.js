@@ -27,8 +27,7 @@ const domResult = document.querySelector("#result");
 const domProcessing = document.querySelector("#processing");
 const domError = document.querySelector("#error");
 const domNoColor = document.querySelector("#no-color");
-let colorCount = 12;
-let ignoreColorLevel = 255;
+let colorCount = 256;
 
 canvas.style.display = "none";
 
@@ -42,7 +41,7 @@ function analysis() {
 
     context.drawImage(image, 0, 0, image.width, image.height, 0, 0, canvas.width, canvas.height);
     const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
-    const colorArray = medianCut(imageData, colorCount, ignoreColorLevel);
+    const colorArray = medianCut(imageData, colorCount);
     context.putImageData(imageData, 0, 0);
     
     if (colorArray.length > 0) {
@@ -102,20 +101,5 @@ domColorCount.onblur = e => {
     resetResult();
     e.target.value = val;
     colorCount = val;
-    analysis();
-};
-
-const domIgnoreColorLevel = document.querySelector("#ignore-color-level");
-domIgnoreColorLevel.setAttribute("value", ignoreColorLevel);
-domIgnoreColorLevel.onblur = e => {
-    const val = Number(e.target.value);
-    if (val < 0 || val > 255) {
-        e.target.value = ignoreColorLevel;
-        return;
-    }
-    domProcessing.style.display = "";
-    resetResult();
-    e.target.value = val;
-    ignoreColorLevel = val;
     analysis();
 };

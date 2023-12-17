@@ -3,7 +3,7 @@
  * 引数はImageDataオブジェクトであること。
  * 注意！引数のimageDataはメディアンカットで減色処理されます。
  */
-function medianCut(imageData, maxColorGroupCount = 12, ignoreColorLevel = 255) {
+function medianCut(imageData, maxColorGroupCount = 12) {
     const colorArray = [];
     let id = 0;
     for (let i = 0; i < imageData.data.length; i += 4) {
@@ -14,14 +14,6 @@ function medianCut(imageData, maxColorGroupCount = 12, ignoreColorLevel = 255) {
         const red   = imageData.data[i];
         const green = imageData.data[i + 1];
         const blue  = imageData.data[i + 2];
-        // 薄い色は排除する
-        if (
-            red   > ignoreColorLevel &&
-            green > ignoreColorLevel &&
-            blue  > ignoreColorLevel
-        ) {
-            continue;
-        }
         colorArray.push({id: id++, red, green, blue});
     }
     if (colorArray.length === 0) {

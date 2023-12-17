@@ -66,10 +66,6 @@ input[type="file"] {
   width: 60px;
 }
 
-#ignore-color-level {
-  width: 60px;
-}
-
 canvas {
   display: block;
   width: 100%;
