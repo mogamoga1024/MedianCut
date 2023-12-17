@@ -30,7 +30,7 @@ const domResult = document.querySelector("#result");
 const domProcessing = document.querySelector("#processing");
 const domError = document.querySelector("#error");
 const domNoColor = document.querySelector("#no-color");
-let colorCount = 256;
+let colorCount = 64;
 
 canvasWrapper.style.display = "none";
 
