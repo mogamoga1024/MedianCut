@@ -8,7 +8,7 @@ image.onerror = () => {
     URL.revokeObjectURL(image.src);
 };
 image.setAttribute("crossorigin", "anonymous");
-// image.src = "images/clover_days.jpg";
+image.src = "images/clover_days.jpg";
 // image.src = "images/2.jpg";
 // image.src = "images/kyu.jpg";
 // image.src = "images/images.png";
@@ -19,7 +19,7 @@ image.setAttribute("crossorigin", "anonymous");
 // image.src = "images/watya.jpg";
 // image.src = "images/bug.png";
 // image.src = "images/test.png";
-image.src = "https://picsum.photos/800/400";
+// image.src = "https://picsum.photos/800/400";
 
 const canvas = document.querySelector("canvas");
 const context = canvas.getContext("2d");

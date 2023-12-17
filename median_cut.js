@@ -3,7 +3,7 @@
  * 引数はImageDataオブジェクトであること
  */
 function medianCut(imageData, maxColorGroupCount = 12, ignoreColorLevel = 255) {
-    const strColorArray = [];
+    const colorArray = [];
     for (let i = 0; i < imageData.data.length; i += 4) {
         // 透明は排除する
         if (imageData.data[i + 3] === 0) {
@@ -20,15 +20,11 @@ function medianCut(imageData, maxColorGroupCount = 12, ignoreColorLevel = 255) {
         ) {
             continue;
         }
-        strColorArray.push(`{"red":${red},"green":${green},"blue":${blue}}`);
+        colorArray.push({red, green, blue});
     }
-    if (strColorArray.length === 0) {
+    if (colorArray.length === 0) {
         return [];
     }
-    // 重複削除
-    const uniqueStrColorArray = [...new Set(strColorArray)];
-    const colorArray = uniqueStrColorArray.map(str => JSON.parse(str));
-
     const tmpColorGroupArray = [colorArray];
     let colorGroupArray = [];
 
