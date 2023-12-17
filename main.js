@@ -8,7 +8,7 @@ image.onerror = () => {
     URL.revokeObjectURL(image.src);
 };
 image.setAttribute("crossorigin", "anonymous");
-image.src = "images/clover_days.jpg";
+// image.src = "images/clover_days.jpg";
 // image.src = "images/2.jpg";
 // image.src = "images/kyu.jpg";
 // image.src = "images/images.png";
@@ -19,30 +19,33 @@ image.src = "images/clover_days.jpg";
 // image.src = "images/watya.jpg";
 // image.src = "images/bug.png";
 // image.src = "images/test.png";
-// image.src = "https://picsum.photos/800/400";
+image.src = "https://picsum.photos/800/400";
 
-const canvas = document.querySelector("canvas");
-const context = canvas.getContext("2d");
+const canvasWrapper = document.querySelector("#canvas-wrapper");
+const srcCanvas = document.querySelector("#original-image");
+const srcContext = srcCanvas.getContext("2d");
+const dstCanvas = document.querySelector("#result-image");
+const dstContext = dstCanvas.getContext("2d");
 const domResult = document.querySelector("#result");
 const domProcessing = document.querySelector("#processing");
 const domError = document.querySelector("#error");
 const domNoColor = document.querySelector("#no-color");
 let colorCount = 256;
 
-canvas.style.display = "none";
+canvasWrapper.style.display = "none";
 
 function analysis() {
     domProcessing.style.display = "none";
     domError.style.display = "none";
-    canvas.style.display = "block";
-    canvas.style.maxWidth = `${image.width}px`;
-    canvas.width = image.width;
-    canvas.height = image.height;
-
-    context.drawImage(image, 0, 0, image.width, image.height, 0, 0, canvas.width, canvas.height);
-    const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+    canvasWrapper.style.display = "";
+    srcCanvas.style.maxWidth = dstCanvas.style.maxWidth = `${image.width}px`;
+    srcCanvas.width = dstCanvas.width = image.width;
+    srcCanvas.height = dstCanvas.height = image.height;
+    
+    srcContext.drawImage(image, 0, 0, image.width, image.height, 0, 0, srcCanvas.width, srcCanvas.height);
+    const imageData = srcContext.getImageData(0, 0, srcCanvas.width, srcCanvas.height);
     const colorArray = medianCut(imageData, colorCount);
-    context.putImageData(imageData, 0, 0);
+    dstContext.putImageData(imageData, 0, 0);
     
     if (colorArray.length > 0) {
         domNoColor.style.display = "none";
@@ -67,7 +70,7 @@ function resetResult() {
 const domRandomImage = document.querySelector("#random-image");
 domRandomImage.onclick = e => {
     domProcessing.style.display = "";
-    canvas.style.display = "none";
+    canvasWrapper.style.display = "none";
     resetResult();
     URL.revokeObjectURL(image.src);
     image.src = "https://picsum.photos/800/400";
@@ -83,7 +86,7 @@ domFile.onchange = e => {
         return;
     }
     domProcessing.style.display = "";
-    canvas.style.display = "none";
+    canvasWrapper.style.display = "none";
     resetResult();
     domFileName.textContent = file.name;
     image.src = URL.createObjectURL(file);

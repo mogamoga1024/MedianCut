@@ -27,7 +27,12 @@
       <input id="color-count" type="number" min="1">
     </div>
   </div>
-  <canvas></canvas>
+  <div id="canvas-wrapper">
+    <strong>減色前</strong>
+    <canvas id="original-image"></canvas>
+    <strong>減色後</strong>
+    <canvas id="result-image"></canvas>
+  </div>
   <div id="processing" class="message">処理中…</div>
   <div id="error" class="message" style="display: none;">エラー！本当に画像？</div>
   <div id="result">
