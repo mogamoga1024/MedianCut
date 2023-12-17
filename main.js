@@ -39,9 +39,11 @@ function analysis() {
     canvas.style.maxWidth = `${image.width}px`;
     canvas.width = image.width;
     canvas.height = image.height;
+
     context.drawImage(image, 0, 0, image.width, image.height, 0, 0, canvas.width, canvas.height);
     const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
     const colorArray = medianCut(imageData, colorCount, ignoreColorLevel);
+    context.putImageData(imageData, 0, 0);
     
     if (colorArray.length > 0) {
         domNoColor.style.display = "none";

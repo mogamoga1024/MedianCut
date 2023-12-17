@@ -1,9 +1,11 @@
 
 /**
- * 引数はImageDataオブジェクトであること
+ * 引数はImageDataオブジェクトであること。
+ * 注意！引数のimageDataはメディアンカットで減色処理されます。
  */
 function medianCut(imageData, maxColorGroupCount = 12, ignoreColorLevel = 255) {
     const colorArray = [];
+    let id = 0;
     for (let i = 0; i < imageData.data.length; i += 4) {
         // 透明は排除する
         if (imageData.data[i + 3] === 0) {
@@ -20,7 +22,7 @@ function medianCut(imageData, maxColorGroupCount = 12, ignoreColorLevel = 255) {
         ) {
             continue;
         }
-        colorArray.push({red, green, blue});
+        colorArray.push({id: id++, red, green, blue});
     }
     if (colorArray.length === 0) {
         return [];
@@ -106,11 +108,17 @@ function medianCut(imageData, maxColorGroupCount = 12, ignoreColorLevel = 255) {
             total.blue  += color.blue;
             return total;
         }, {red: 0, green: 0, blue: 0});
-        return {
+        const averageColor = {
             red:   Math.round(totalColor.red   / colorGroup.length),
             green: Math.round(totalColor.green / colorGroup.length),
             blue:  Math.round(totalColor.blue  / colorGroup.length)
         };
+        for (const color of colorGroup) {
+            imageData.data[color.id * 4]     = averageColor.red;
+            imageData.data[color.id * 4 + 1] = averageColor.green;
+            imageData.data[color.id * 4 + 2] = averageColor.blue;
+        }
+        return averageColor;
     }).sort((a, b) => {
         const sumA = a.red + a.green + a.blue;
         const sumB = b.red + b.green + b.blue;
