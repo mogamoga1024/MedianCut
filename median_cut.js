@@ -3,7 +3,7 @@
  * 引数はImageDataオブジェクトであること。
  * 注意！引数のimageDataはメディアンカットで減色処理されます。
  */
-function medianCut(imageData, maxColorGroupCount = 12) {
+function medianCut(imageData, maxColorGroupCount = 64) {
     const colorArray = [];
     let id = 0;
     for (let i = 0; i < imageData.data.length; i += 4) {
