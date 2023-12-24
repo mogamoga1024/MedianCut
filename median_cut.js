@@ -5,16 +5,15 @@
  */
 function medianCut(imageData, maxColorGroupCount = 64) {
     const colorArray = [];
-    let id = 0;
     for (let i = 0; i < imageData.data.length; i += 4) {
-        // 透明は排除する
+        // 透明は無視する
         if (imageData.data[i + 3] === 0) {
             continue;
         }
         const red   = imageData.data[i];
         const green = imageData.data[i + 1];
         const blue  = imageData.data[i + 2];
-        colorArray.push({id: id++, red, green, blue});
+        colorArray.push({idx: i, red, green, blue});
     }
     if (colorArray.length === 0) {
         return [];
@@ -106,9 +105,9 @@ function medianCut(imageData, maxColorGroupCount = 64) {
             blue:  Math.round(totalColor.blue  / colorGroup.length)
         };
         for (const color of colorGroup) {
-            imageData.data[color.id * 4]     = averageColor.red;
-            imageData.data[color.id * 4 + 1] = averageColor.green;
-            imageData.data[color.id * 4 + 2] = averageColor.blue;
+            imageData.data[color.idx]     = averageColor.red;
+            imageData.data[color.idx + 1] = averageColor.green;
+            imageData.data[color.idx + 2] = averageColor.blue;
         }
         return averageColor;
     }).sort((a, b) => {

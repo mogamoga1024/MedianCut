@@ -19,6 +19,7 @@ image.setAttribute("crossorigin", "anonymous");
 // image.src = "images/watya.jpg";
 // image.src = "images/bug.png";
 // image.src = "images/test.png";
+// image.src = "images/toka.png";
 image.src = "https://picsum.photos/800/400";
 
 const canvasWrapper = document.querySelector("#canvas-wrapper");
