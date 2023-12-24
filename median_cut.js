@@ -77,7 +77,8 @@ function medianCut(imageData, maxColorGroupCount = 64) {
 
         // 中央値で分割する
         const lowerGroup = [], upperGropu = [];
-        for (const color of colorGroup) {
+        while (colorGroup.length > 0) {
+            const color = colorGroup.pop();
             if (color[colorName] < center) {
                 lowerGroup.push(color);
             }
