@@ -49,8 +49,9 @@ function analysis() {
     });
 
     if (!isValidCanvas) {
-        // todo
-        alert("画像サイズが大きすぎるみたい。ごめんね。");
+        domProcessing.style.display = "none";
+        domError.style.display = "";
+        domError.textContent = "画像サイズがでかすぎます…";
         return;
     }
 
@@ -74,7 +75,9 @@ function analysis() {
     };
     worker.onerror = function(e) {
         console.error(e);
-        // todo
+        domProcessing.style.display = "none";
+        domError.style.display = "";
+        domError.textContent = "よく分からんエラー…";
     };
     worker.postMessage({imageData, colorCount});
 }
