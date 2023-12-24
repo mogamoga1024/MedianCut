@@ -31,6 +31,7 @@ const domResult = document.querySelector("#result");
 const domProcessing = document.querySelector("#processing");
 const domError = document.querySelector("#error");
 let colorCount = 64;
+let worker = undefined;
 
 canvasWrapper.style.display = "none";
 
@@ -55,15 +56,24 @@ function analysis() {
 
     srcContext.drawImage(image, 0, 0, image.width, image.height, 0, 0, srcCanvas.width, srcCanvas.height);
     const imageData = srcContext.getImageData(0, 0, srcCanvas.width, srcCanvas.height);
-    const colorArray = medianCut(imageData, colorCount);
-    dstContext.putImageData(imageData, 0, 0);
-    
-    for (const color of colorArray) {
-        const domColor = document.createElement("div");
-        domColor.classList.add("color");
-        domColor.style.backgroundColor = `rgb(${color.red}, ${color.green}, ${color.blue})`;
-        domResult.appendChild(domColor);
-    }
+
+    worker?.terminate();
+    worker = new Worker("median_cut_worker.js");
+    worker.onmessage = function(e) {
+        const colorArray = e.data;
+        dstContext.putImageData(imageData, 0, 0);
+        for (const color of colorArray) {
+            const domColor = document.createElement("div");
+            domColor.classList.add("color");
+            domColor.style.backgroundColor = `rgb(${color.red}, ${color.green}, ${color.blue})`;
+            domResult.appendChild(domColor);
+        }
+    };
+    worker.onerror = function(e) {
+        console.error(e);
+        // todo
+    };
+    worker.postMessage({imageData, colorCount});
 }
 
 function resetResult() {
