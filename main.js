@@ -37,6 +37,8 @@ let worker = undefined;
 canvasWrapper.style.display = "none";
 
 function analysis() {
+    worker?.terminate();
+
     domError.style.display = "none";
     canvasWrapper.style.display = "none";
     srcCanvas.style.maxWidth = dstCanvas.style.maxWidth = `${image.width}px`;
@@ -58,7 +60,6 @@ function analysis() {
     srcContext.drawImage(image, 0, 0, image.width, image.height, 0, 0, srcCanvas.width, srcCanvas.height);
     const imageData = srcContext.getImageData(0, 0, srcCanvas.width, srcCanvas.height);
 
-    worker?.terminate();
     worker = new Worker("median_cut_worker.js");
     worker.onmessage = function(e) {
         domProcessing.style.display = "none";
