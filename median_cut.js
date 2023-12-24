@@ -4,16 +4,17 @@
  * 注意！引数のimageDataはメディアンカットで減色処理されます。
  */
 function medianCut(imageData, maxColorGroupCount = 64) {
+    const getRed   = i => imageData.data[i];
+    const getGreen = i => imageData.data[i + 1];
+    const getBlue  = i => imageData.data[i + 2];
+    
     const colorArray = [];
     for (let i = 0; i < imageData.data.length; i += 4) {
         // 透明は無視する
         if (imageData.data[i + 3] === 0) {
             continue;
         }
-        const red   = imageData.data[i];
-        const green = imageData.data[i + 1];
-        const blue  = imageData.data[i + 2];
-        colorArray.push({idx: i, red, green, blue});
+        colorArray.push(i);
     }
     if (colorArray.length === 0) {
         return [];
@@ -40,15 +41,14 @@ function medianCut(imageData, maxColorGroupCount = 64) {
             blue:  {min: 255, max: 0}
         }
         for (const color of colorGroup) {
-            statistics.red.min   = Math.min(statistics.red.min, color.red);
-            statistics.red.max   = Math.max(statistics.red.max, color.red);
-            statistics.green.min = Math.min(statistics.green.min, color.green);
-            statistics.green.max = Math.max(statistics.green.max, color.green);
-            statistics.blue.min  = Math.min(statistics.blue.min, color.blue);
-            statistics.blue.max  = Math.max(statistics.blue.max, color.blue);
+            statistics.red.min   = Math.min(statistics.red.min, getRed(color));
+            statistics.red.max   = Math.max(statistics.red.max, getRed(color));
+            statistics.green.min = Math.min(statistics.green.min, getGreen(color));
+            statistics.green.max = Math.max(statistics.green.max, getGreen(color));
+            statistics.blue.min  = Math.min(statistics.blue.min, getBlue(color));
+            statistics.blue.max  = Math.max(statistics.blue.max, getBlue(color));
         }
 
-        let colorName = undefined;
         const diffRed   = statistics.red.max   - statistics.red.min;
         const diffGreen = statistics.green.max - statistics.green.min;
         const diffBlue  = statistics.blue.max  - statistics.blue.min;
@@ -62,24 +62,28 @@ function medianCut(imageData, maxColorGroupCount = 64) {
             continue;
         }
 
+        let center = undefined;
+        let getTargetRGB = undefined;
+
         // RGBで濃度差が大きい要素を求める
         if (diffRed >= diffGreen && diffRed >= diffBlue) {
-            colorName = "red";
+            center = (statistics.red.min + statistics.red.max) / 2;
+            getTargetRGB = getRed;
         }
         else if (diffGreen >= diffRed && diffGreen >= diffBlue) {
-            colorName = "green";
+            center = (statistics.green.min + statistics.green.max) / 2;
+            getTargetRGB = getGreen;
         }
         else {
-            colorName = "blue";
+            center = (statistics.blue.min + statistics.blue.max) / 2;
+            getTargetRGB = getBlue;
         }
-
-        const center = (statistics[colorName].min + statistics[colorName].max) / 2;
 
         // 中央値で分割する
         const lowerGroup = [], upperGropu = [];
         while (colorGroup.length > 0) {
             const color = colorGroup.pop();
-            if (color[colorName] < center) {
+            if (getTargetRGB(color) < center) {
                 lowerGroup.push(color);
             }
             else {
@@ -95,9 +99,9 @@ function medianCut(imageData, maxColorGroupCount = 64) {
     // 分割された色空間の平均値を求める
     return colorGroupArray.map(colorGroup => {
         const totalColor = colorGroup.reduce((total, color) => {
-            total.red   += color.red;
-            total.green += color.green;
-            total.blue  += color.blue;
+            total.red   += getRed(color);
+            total.green += getGreen(color);
+            total.blue  += getBlue(color);
             return total;
         }, {red: 0, green: 0, blue: 0});
         const averageColor = {
@@ -106,9 +110,9 @@ function medianCut(imageData, maxColorGroupCount = 64) {
             blue:  Math.round(totalColor.blue  / colorGroup.length)
         };
         for (const color of colorGroup) {
-            imageData.data[color.idx]     = averageColor.red;
-            imageData.data[color.idx + 1] = averageColor.green;
-            imageData.data[color.idx + 2] = averageColor.blue;
+            imageData.data[color]     = averageColor.red;
+            imageData.data[color + 1] = averageColor.green;
+            imageData.data[color + 2] = averageColor.blue;
         }
         return averageColor;
     }).sort((a, b) => {
