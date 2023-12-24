@@ -73,7 +73,7 @@ canvas {
   border: 1px solid black;
 }
 
-#result {
+#pallet {
   display: flex;
   flex-wrap: wrap;
   gap: 2px;

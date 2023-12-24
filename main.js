@@ -5,6 +5,7 @@ image.onload = analysis;
 image.onerror = () => {
     domProcessing.style.display = "none";
     domError.style.display = "";
+    domError.textContent = "エラー！本当に画像？";
     URL.revokeObjectURL(image.src);
 };
 image.setAttribute("crossorigin", "anonymous");
@@ -27,7 +28,7 @@ const srcCanvas = document.querySelector("#original-image");
 const srcContext = srcCanvas.getContext("2d", {willReadFrequently: true});
 const dstCanvas = document.querySelector("#result-image");
 const dstContext = dstCanvas.getContext("2d");
-const domResult = document.querySelector("#result");
+const domPallet = document.querySelector("#pallet");
 const domProcessing = document.querySelector("#processing");
 const domError = document.querySelector("#error");
 let colorCount = 64;
@@ -36,9 +37,8 @@ let worker = undefined;
 canvasWrapper.style.display = "none";
 
 function analysis() {
-    domProcessing.style.display = "none";
     domError.style.display = "none";
-    canvasWrapper.style.display = "";
+    canvasWrapper.style.display = "none";
     srcCanvas.style.maxWidth = dstCanvas.style.maxWidth = `${image.width}px`;
     srcCanvas.width = dstCanvas.width = image.width;
     srcCanvas.height = dstCanvas.height = image.height;
@@ -60,13 +60,16 @@ function analysis() {
     worker?.terminate();
     worker = new Worker("median_cut_worker.js");
     worker.onmessage = function(e) {
-        const colorArray = e.data;
+        domProcessing.style.display = "none";
+        canvasWrapper.style.display = "";
+
+        const {colorArray, imageData} = e.data;
         dstContext.putImageData(imageData, 0, 0);
         for (const color of colorArray) {
             const domColor = document.createElement("div");
             domColor.classList.add("color");
             domColor.style.backgroundColor = `rgb(${color.red}, ${color.green}, ${color.blue})`;
-            domResult.appendChild(domColor);
+            domPallet.appendChild(domColor);
         }
     };
     worker.onerror = function(e) {
@@ -76,9 +79,9 @@ function analysis() {
     worker.postMessage({imageData, colorCount});
 }
 
-function resetResult() {
-    while (domResult.firstChild) {
-        domResult.removeChild(domResult.firstChild);
+function resetPallet() {
+    while (domPallet.firstChild) {
+        domPallet.removeChild(domPallet.firstChild);
     }
 }
 
@@ -86,7 +89,7 @@ const domRandomImage = document.querySelector("#random-image");
 domRandomImage.onclick = e => {
     domProcessing.style.display = "";
     canvasWrapper.style.display = "none";
-    resetResult();
+    resetPallet();
     URL.revokeObjectURL(image.src);
     image.src = "https://picsum.photos/800/400";
 };
@@ -102,7 +105,7 @@ domFile.onchange = e => {
     }
     domProcessing.style.display = "";
     canvasWrapper.style.display = "none";
-    resetResult();
+    resetPallet();
     domFileName.textContent = file.name;
     image.src = URL.createObjectURL(file);
 };
@@ -111,13 +114,15 @@ const domColorCount = document.querySelector("#color-count");
 domColorCount.setAttribute("value", colorCount);
 domColorCount.onblur = e => {
     const val = Number(e.target.value);
-    if (val < 1) {
+    if (val < 1 || val === colorCount) {
         e.target.value = colorCount;
         return;
     }
-    domProcessing.style.display = "";
-    resetResult();
+    resetPallet();
     e.target.value = val;
     colorCount = val;
-    analysis();
+    if (domError.style.display !== "") {
+        domProcessing.style.display = "";
+        analysis();
+    }
 };
