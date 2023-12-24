@@ -41,7 +41,18 @@ function analysis() {
     srcCanvas.style.maxWidth = dstCanvas.style.maxWidth = `${image.width}px`;
     srcCanvas.width = dstCanvas.width = image.width;
     srcCanvas.height = dstCanvas.height = image.height;
-    
+
+    const isValidCanvas = canvasSize.test({
+        width : image.width,
+        height: image.height
+    });
+
+    if (!isValidCanvas) {
+        // todo
+        alert("画像サイズが大きすぎるみたい。ごめんね。");
+        return;
+    }
+
     srcContext.drawImage(image, 0, 0, image.width, image.height, 0, 0, srcCanvas.width, srcCanvas.height);
     const imageData = srcContext.getImageData(0, 0, srcCanvas.width, srcCanvas.height);
     const colorArray = medianCut(imageData, colorCount);
