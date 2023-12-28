@@ -101,7 +101,10 @@ domRandomImage.onclick = e => {
 const domBtnFile = document.querySelector("#btn-file");
 const domFile = document.querySelector("#file");
 const domFileName = document.querySelector("#file-name");
-domBtnFile.onclick = e => domFile.click();
+domBtnFile.onclick = e => {
+    domFile.value = "";
+    domFile.click();
+};
 domFile.onchange = e => {
     const file = e.target.files[0];
     if (file == null) {
