@@ -95,7 +95,7 @@ domRandomImage.onclick = e => {
     canvasWrapper.style.display = "none";
     resetPallet();
     URL.revokeObjectURL(image.src);
-    image.src = "https://picsum.photos/800/400";
+    image.src = `https://picsum.photos/800/400?${(new Date).getTime()}`;
 };
 
 const domBtnFile = document.querySelector("#btn-file");
